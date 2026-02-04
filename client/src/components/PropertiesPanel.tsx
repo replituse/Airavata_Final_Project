@@ -103,19 +103,7 @@ export function PropertiesPanel() {
             </div>
           )}
 
-          {isNode && element.data?.type === 'reservoir' && (
-            <div className="grid gap-2">
-              <Label htmlFor="elev">Water Elevation (m)</Label>
-              <Input 
-                id="elev" 
-                type="number" 
-                value={element.data?.elevation || 0} 
-                onChange={(e) => handleChange('elevation', e.target.value)} 
-              />
-            </div>
-          )}
-
-          {isNode && (element.data?.type === 'node' || element.data?.type === 'junction') && (
+          {isNode && (element.data?.type === 'node' || element.data?.type === 'junction' || element.data?.type === 'reservoir' || element.data?.type === 'surgeTank' || element.data?.type === 'flowBoundary') && (
             <>
               <div className="grid gap-2">
                 <Label htmlFor="nodeNum">Node Number</Label>

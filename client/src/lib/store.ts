@@ -115,21 +115,25 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
     const id = getId();
     let initialData: NodeData = { label: '', type };
 
+    // Common node number logic for all physical nodes
+    const nodeTypesWithNumbers: NodeType[] = ['reservoir', 'node', 'junction', 'surgeTank', 'flowBoundary'];
+    let nodeNumber = parseInt(id);
+
     switch (type) {
       case 'reservoir':
-        initialData = { ...initialData, label: `RES-${id}`, elevation: 100 };
+        initialData = { ...initialData, label: 'HW', nodeNumber, elevation: 100 };
         break;
       case 'node':
-        initialData = { ...initialData, label: `${id}`, nodeNumber: parseInt(id), elevation: 50 };
+        initialData = { ...initialData, label: `Node ${nodeNumber}`, nodeNumber, elevation: 50 };
         break;
       case 'junction':
-        initialData = { ...initialData, label: `J-${id}`, nodeNumber: parseInt(id), elevation: 50 };
+        initialData = { ...initialData, label: `Node ${nodeNumber}`, nodeNumber, elevation: 50 };
         break;
       case 'surgeTank':
-        initialData = { ...initialData, label: `ST-${id}`, nodeNumber: parseInt(id), topElevation: 120, bottomElevation: 80, diameter: 5, celerity: 1000, friction: 0.01 };
+        initialData = { ...initialData, label: 'ST', nodeNumber, topElevation: 120, bottomElevation: 80, diameter: 5, celerity: 1000, friction: 0.01 };
         break;
       case 'flowBoundary':
-        initialData = { ...initialData, label: `BC-${id}`, nodeNumber: parseInt(id), scheduleNumber: 1 };
+        initialData = { ...initialData, label: `FB${id}`, nodeNumber, scheduleNumber: 1 };
         break;
     }
 

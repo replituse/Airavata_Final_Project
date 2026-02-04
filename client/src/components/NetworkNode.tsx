@@ -50,6 +50,10 @@ export const JunctionNode = memo(({ data, selected }: NodeProps) => {
       <Handle type="source" position={Position.Right} className="!bg-red-500 opacity-0" />
       
       <div className="text-[8px] font-bold text-red-600">{data.nodeNumber}</div>
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        Node {data.nodeNumber}
+        {data.type === 'junction' && ' (Junction)'}
+      </div>
     </div>
   );
 });
