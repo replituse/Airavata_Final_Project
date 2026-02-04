@@ -10,7 +10,7 @@ export const ReservoirNode = memo(({ data, selected }: NodeProps) => {
   return (
     <div className={clsx(
       "w-[40px] h-[30px] rounded-sm border shadow-sm flex flex-col items-center justify-center transition-all group",
-      selected ? "border-primary ring-2 ring-primary/20 bg-blue-600" : "border-blue-400 bg-blue-500",
+      selected ? "border-primary ring-1 ring-primary/30 bg-blue-600" : "border-blue-400 bg-blue-500",
     )}>
       <Handle type="source" position={Position.Top} className={HandleStyle} />
       <Handle type="source" position={Position.Bottom} className={HandleStyle} />
@@ -27,7 +27,7 @@ export const SimpleNode = memo(({ data, selected }: NodeProps) => {
   return (
     <div className={clsx(
       "w-4 h-4 rounded-full border shadow-sm flex items-center justify-center transition-all relative group",
-      selected ? "bg-primary border-primary ring-4 ring-primary/20" : "bg-white border-slate-400"
+      selected ? "bg-primary border-primary ring-2 ring-primary/30" : "bg-white border-slate-400"
     )}>
       <Handle type="target" position={Position.Top} className={HandleStyle} />
       <Handle type="source" position={Position.Bottom} className={HandleStyle} />
@@ -47,7 +47,7 @@ export const JunctionNode = memo(({ data, selected }: NodeProps) => {
   return (
     <div className={clsx(
       "w-5 h-5 rounded-full border-2 shadow-sm flex items-center justify-center transition-all relative group",
-      selected ? "border-red-500 bg-red-100 ring-2 ring-red-500/20" : "border-red-500 bg-white"
+      selected ? "border-red-500 bg-red-100 ring-1 ring-red-500/30" : "border-red-500 bg-white"
     )}>
       <Handle type="target" position={Position.Top} className={clsx(HandleStyle, "!bg-red-500")} />
       <Handle type="source" position={Position.Bottom} className={clsx(HandleStyle, "!bg-red-500")} />
@@ -68,7 +68,7 @@ export const SurgeTankNode = memo(({ data, selected }: NodeProps) => {
   return (
     <div className={clsx(
       "px-3 py-4 rounded-t-lg rounded-b-md border-2 shadow-md min-w-[60px] flex flex-col items-center justify-between transition-all bg-orange-50 group",
-      selected ? "border-orange-500 ring-2 ring-orange-500/20" : "border-orange-400"
+      selected ? "border-orange-500 ring-1 ring-orange-500/30" : "border-orange-400"
     )}>
       <Handle type="target" position={Position.Top} className={clsx(HandleStyle, "!bg-orange-500")} />
       <Handle type="target" position={Position.Bottom} className={clsx(HandleStyle, "!bg-orange-500")} />
@@ -86,7 +86,7 @@ export const FlowBoundaryNode = memo(({ data, selected }: NodeProps) => {
   return (
     <div className={clsx(
       "p-2 rounded border shadow-sm flex items-center gap-2 transition-all bg-green-50 group",
-      selected ? "border-green-500 ring-2 ring-green-500/20" : "border-green-400"
+      selected ? "border-green-500 ring-1 ring-green-500/30" : "border-green-400"
     )}>
       <Handle type="source" position={Position.Top} className={clsx(HandleStyle, "!bg-green-500")} />
       <Handle type="source" position={Position.Bottom} className={clsx(HandleStyle, "!bg-green-500")} />

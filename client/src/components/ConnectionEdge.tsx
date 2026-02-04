@@ -36,14 +36,14 @@ export const ConnectionEdge = memo(({
       <defs>
         <marker
           id={`arrow-${id}`}
-          markerWidth="10"
-          markerHeight="10"
-          refX="8"
-          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          refX="5"
+          refY="3"
           orient="auto-start-reverse"
           markerUnits="strokeWidth"
         >
-          <path d="M0,0 L10,5 L0,10 z" fill={style.stroke || '#3b82f6'} />
+          <path d="M0,0 L6,3 L0,6 z" fill={style.stroke || '#3b82f6'} />
         </marker>
       </defs>
       <BaseEdge 
