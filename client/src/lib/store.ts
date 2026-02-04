@@ -9,6 +9,9 @@ import {
   OnNodesChange,
   OnEdgesChange,
   OnConnect,
+  MarkerType,
+  applyNodeChanges,
+  applyEdgeChanges,
 } from '@xyflow/react';
 import { NodeType, LinkType } from '@shared/schema';
 
@@ -71,28 +74,14 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
 
   onNodesChange: (changes: NodeChange[]) => {
     set({
-      nodes: get().nodes.map((node) => {
-        const change = changes.find((c) => c.id === node.id);
-        if (change && change.type === 'position' && change.position) {
-            return { ...node, position: change.position };
-        }
-        if (change && change.type === 'select') {
-           // handled via onNodeClick in component generally, but good for multi-select logic if needed
-           return { ...node, selected: change.selected };
-        }
-        return node;
-      }),
+      nodes: applyNodeChanges(changes, get().nodes) as WhamoNode[],
     });
-    // Use xyflow helper for complex changes if needed, manual map for now to keep it simple for the prompt
-    // Ideally we import { applyNodeChanges } from '@xyflow/react'
-    // But since I can't easily import utility functions without the package installed in my context,
-    // I will assume the component handles the heavy lifting via the hook provided by react flow
-    // or we implement simple state updates.
-    // Actually, let's just expose setNodes for the component to use applyNodeChanges
   },
 
   onEdgesChange: (changes: EdgeChange[]) => {
-    // Similarly, we will let the component drive this via set
+    set({
+      edges: applyEdgeChanges(changes, get().edges) as WhamoEdge[],
+    });
   },
 
   onConnect: (connection: Connection) => {
@@ -103,7 +92,8 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
           ...connection,
           id,
           type: 'conduit', // Default edge type
-          markerEnd: { type: 'arrowclosed', color: '#3b82f6' },
+          style: { stroke: '#3b82f6', strokeWidth: 2 },
+          markerEnd: { type: MarkerType.ArrowClosed, color: '#3b82f6' },
           data: { 
             label: `C-${id}`, 
             type: 'conduit', 
@@ -169,10 +159,10 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
 
           if (data.type === 'conduit') {
             style = { stroke: '#3b82f6', strokeWidth: 2 };
-            markerEnd = { type: 'arrowclosed', color: '#3b82f6' };
+            markerEnd = { type: MarkerType.ArrowClosed, color: '#3b82f6' };
           } else if (data.type === 'dummy') {
             style = { stroke: '#94a3b8', strokeWidth: 2, strokeDasharray: '5,5' };
-            markerEnd = { type: 'arrowclosed', color: '#94a3b8' };
+            markerEnd = { type: MarkerType.ArrowClosed, color: '#94a3b8' };
           }
 
           return { 

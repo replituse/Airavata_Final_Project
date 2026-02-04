@@ -3,14 +3,11 @@ import {
   ReactFlow, 
   Background, 
   Controls, 
-  applyNodeChanges, 
-  applyEdgeChanges, 
   NodeChange,
   EdgeChange,
   Connection,
-  addEdge,
-  useNodesState,
-  useEdgesState
+  Edge,
+  Node,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useNetworkStore, WhamoNode, WhamoEdge } from '@/lib/store';
@@ -39,17 +36,15 @@ export default function Designer() {
     nodes, 
     edges, 
     onNodesChange: storeOnNodesChange, 
+    onEdgesChange: storeOnEdgesChange,
     onConnect: storeOnConnect, 
     selectElement, 
     loadNetwork,
     clearNetwork
   } = useNetworkStore();
 
-  // Local state wrapping store state to make React Flow happy with drag/drop updates
-  // In a real optimized app, we'd probably use the store exclusively, but React Flow hooks are convenient
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
-      // We need to update store as well
       storeOnNodesChange(changes);
     },
     [storeOnNodesChange]
@@ -57,10 +52,9 @@ export default function Designer() {
 
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
-      // Just a placeholder in store for now, React Flow handles visual drag internally usually if state is managed there
-      // But since we are using the store as the source of truth, we rely on the store's state being passed back down
+      storeOnEdgesChange(changes);
     },
-    []
+    [storeOnEdgesChange]
   );
 
   const onConnect = useCallback(
@@ -69,6 +63,14 @@ export default function Designer() {
     },
     [storeOnConnect]
   );
+
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    selectElement(node.id, 'node');
+  }, [selectElement]);
+
+  const onEdgeClick = useCallback((_: React.MouseEvent, edge: Edge) => {
+    selectElement(edge.id, 'edge');
+  }, [selectElement]);
 
   const onSelectionChange = useCallback(({ nodes, edges }: { nodes: WhamoNode[], edges: WhamoEdge[] }) => {
     if (nodes.length > 0) {
@@ -149,9 +151,11 @@ export default function Designer() {
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange} // We rely on store updates mostly, but this connects dragging
+            onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             nodeTypes={nodeTypes}
+            onNodeClick={onNodeClick}
+            onEdgeClick={onEdgeClick}
             onSelectionChange={onSelectionChange}
             fitView
             className="bg-slate-50"
