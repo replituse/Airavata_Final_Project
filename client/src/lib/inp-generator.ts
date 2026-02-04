@@ -165,7 +165,7 @@ export function generateInpFile(nodes: WhamoNode[], edges: WhamoEdge[]) {
         ? nodes.find(n => n.id === req.elementId)
         : edges.find(e => e.id === req.elementId);
       
-      const label = element?.data?.label || element?.id || req.elementId;
+      const label = element?.data?.nodeNumber || element?.data?.label || element?.id || req.elementId;
       const typeStr = req.elementType === 'node' ? 'NODE' : 'ELEM';
       addL(` ${typeStr} ${label} ${req.variables.join(' ')}`);
     });
