@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 
 export function PropertiesPanel() {
   const { 
@@ -13,7 +15,8 @@ export function PropertiesPanel() {
     selectedElementId, 
     selectedElementType, 
     updateNodeData, 
-    updateEdgeData 
+    updateEdgeData,
+    deleteElement
   } = useNetworkStore();
 
   if (!selectedElementId) {
@@ -55,6 +58,19 @@ export function PropertiesPanel() {
       </CardHeader>
       
       <CardContent className="space-y-6 pt-6">
+        {/* Delete Button */}
+        <Button 
+          variant="destructive" 
+          className="w-full gap-2" 
+          onClick={() => selectedElementId && selectedElementType && deleteElement(selectedElementId, selectedElementType)}
+          data-testid="button-delete-element"
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete Element
+        </Button>
+
+        <Separator />
+
         {/* Common Properties */}
         <div className="space-y-4">
           <h4 className="text-sm font-semibold text-foreground/80">General</h4>

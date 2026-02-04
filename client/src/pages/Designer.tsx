@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { 
   ReactFlow, 
   Background, 
@@ -45,8 +45,25 @@ export default function Designer() {
     onConnect: storeOnConnect, 
     selectElement, 
     loadNetwork,
-    clearNetwork
+    clearNetwork,
+    deleteElement,
+    selectedElementId,
+    selectedElementType
   } = useNetworkStore();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.key === 'Delete' || event.key === 'Backspace') && 
+          selectedElementId && 
+          selectedElementType && 
+          !(event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement)) {
+        deleteElement(selectedElementId, selectedElementType);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [deleteElement, selectedElementId, selectedElementType]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) => {
