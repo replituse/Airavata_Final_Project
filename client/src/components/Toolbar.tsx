@@ -122,11 +122,15 @@ export function Toolbar({ onExport, onSave, onLoad }: { onExport: () => void, on
                     <SelectContent>
                       <SelectItem value="_" disabled>Nodes</SelectItem>
                       {nodes.map(n => (
-                        <SelectItem key={n.id} value={n.id}>{n.data.label || `Node ${n.id}`}</SelectItem>
+                        <SelectItem key={n.id} value={n.id}>
+                          {String(n.data.nodeNumber)}
+                        </SelectItem>
                       ))}
                       <SelectItem value="__" disabled>Conduits</SelectItem>
                       {edges.map(e => (
-                        <SelectItem key={e.id} value={e.id}>{e.data?.label || `Edge ${e.id}`}</SelectItem>
+                        <SelectItem key={e.id} value={e.id}>
+                          {e.data?.label || `Edge ${e.id}`}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -157,9 +161,10 @@ export function Toolbar({ onExport, onSave, onLoad }: { onExport: () => void, on
                   <Label className="mb-2 block">Current Requests</Label>
                   {outputRequests.map(req => {
                     const el = nodes.find(n => n.id === req.elementId) || edges.find(e => e.id === req.elementId);
+                    const displayLabel = String(el?.data?.nodeNumber || el?.data?.label || req.elementId);
                     return (
                       <div key={req.id} className="flex items-center justify-between text-sm py-1 border-b">
-                        <span>{el?.data?.label || req.elementId}: {req.variables.join(', ')}</span>
+                        <span>{displayLabel}: {req.variables.join(', ')}</span>
                         <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeOutputRequest(req.id)}>
                           <Trash2 className="w-3 h-3" />
                         </Button>
