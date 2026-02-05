@@ -77,7 +77,7 @@ interface NetworkState {
   updateEdgeData: (id: string, data: Partial<EdgeData>) => void;
   deleteElement: (id: string, type: 'node' | 'edge') => void;
   selectElement: (id: string | null, type: 'node' | 'edge' | null) => void;
-  loadNetwork: (nodes: WhamoNode[], edges: WhamoEdge[]) => void;
+  loadNetwork: (nodes: WhamoNode[], edges: WhamoEdge[], params?: ComputationalParameters, requests?: OutputRequest[]) => void;
   clearNetwork: () => void;
   updateComputationalParams: (params: Partial<ComputationalParameters>) => void;
   addOutputRequest: (request: Omit<OutputRequest, 'id'>) => void;
@@ -255,7 +255,7 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
     set({ selectedElementId: id, selectedElementType: type });
   },
 
-  loadNetwork: (nodes, edges) => {
+  loadNetwork: (nodes, edges, params, requests) => {
     // Reset ID counter based on max ID to prevent collisions
     const maxId = Math.max(
       ...nodes.map(n => parseInt(n.id) || 0),
@@ -263,7 +263,15 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
       0
     );
     idCounter = maxId + 1;
-    set({ nodes, edges, selectedElementId: null, selectedElementType: null });
+    
+    set({ 
+      nodes, 
+      edges, 
+      computationalParams: params || get().computationalParams,
+      outputRequests: requests || [],
+      selectedElementId: null, 
+      selectedElementType: null 
+    });
   },
 
   clearNetwork: () => {

@@ -42,6 +42,8 @@ export default function Designer() {
   const { 
     nodes, 
     edges, 
+    computationalParams,
+    outputRequests,
     onNodesChange: storeOnNodesChange, 
     onEdgesChange: storeOnEdgesChange,
     onConnect: storeOnConnect, 
@@ -115,7 +117,12 @@ export default function Designer() {
   }, [selectElement]);
 
   const handleSave = () => {
-    const data = { nodes, edges };
+    const data = { 
+      nodes, 
+      edges,
+      computationalParams,
+      outputRequests
+    };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     saveAs(blob, `whamo_project_${Date.now()}.json`);
     toast({ title: "Project Saved", description: "Network topology saved to JSON." });
@@ -138,7 +145,7 @@ export default function Designer() {
         if (fileName.endsWith('.json')) {
           const json = JSON.parse(content);
           if (json.nodes && json.edges) {
-            loadNetwork(json.nodes, json.edges);
+            loadNetwork(json.nodes, json.edges, json.computationalParams, json.outputRequests);
             toast({ title: "Project Loaded", description: "Network topology restored from JSON." });
           } else {
             throw new Error("Invalid JSON format");
