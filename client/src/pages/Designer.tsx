@@ -174,9 +174,9 @@ export default function Designer() {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Canvas (70% width on large screens, full on small) */}
-        <div className="flex-1 relative h-full bg-slate-50">
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* Canvas Area */}
+        <div className="flex-1 relative h-full bg-slate-50 transition-all duration-300">
           <ReactFlow
             nodes={nodes as any}
             edges={edges as any}
@@ -190,15 +190,16 @@ export default function Designer() {
             onSelectionChange={onSelectionChange as any}
             fitView
             className="bg-slate-50"
+            proOptions={{ hideAttribution: true }}
           >
             <Background color="#94a3b8" gap={20} size={1} />
             <Controls className="!bg-white !shadow-xl !border-border" />
           </ReactFlow>
         </div>
 
-        {/* Properties Panel (30% width, min 300px) */}
+        {/* Properties Panel (Sidebar) */}
         {selectedElementId && (
-          <div className="w-[350px] border-l border-border bg-card shadow-2xl z-20 flex flex-col transition-all animate-in slide-in-from-right duration-300">
+          <div className="w-[350px] h-full border-l border-border bg-card shadow-2xl z-20 flex flex-col animate-in slide-in-from-right duration-300">
             <PropertiesPanel />
           </div>
         )}
